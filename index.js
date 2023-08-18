@@ -1,6 +1,8 @@
-//Imports inquirer and shapes.js
+//Imports necessary dependancies
 const inquirer = require('inquirer');
-const shapes = require('./lib/shapes.js')
+const { readFile, writeFile } = require('fs/promises');
+const Shape = require('./lib/shapes');
+const { Circle, Triangle, Square } = require('./lib/shapes');
 //Inquirer prompt
 inquirer
     .prompt([
@@ -17,7 +19,7 @@ inquirer
         {
             type: 'input',
             message: 'What shape do you want your logo to be?',
-            name: 'shape'
+            name: 'shapeType'
         },
         {
             type: 'input',
@@ -27,13 +29,21 @@ inquirer
     ])
     //Takes the response from the inquirer prompt, deconstructs it, then passes the values to a function in shapes.js
     .then((response) => {
-        const {text, tcolor, shape, scolor} = response;
+        const {text, tcolor, shapeType, scolor} = response;
+        let shapeToLower = shapeType.toLowerCase();
+        let logoShape = '';
 
-        if (shape.toLowerCase === 'circle') {
-            shapes.Circle.render(scolor, text, tcolor);
-        } else if (shape.toLowerCase === 'square') {
-            shapes.Square.render(scolor, text, tcolor);
-        } else if (shape.toLowerCase === 'triangle') {
-            shapes.Triangle.render(scolor, text, tcolor);
+        if (shapeToLower === 'circle') {
+            logoShape = new Circle(scolor, text, tcolor);
+        } else if (shapeToLower === 'square') {
+            logoShape = new Square(scolor, text, tcolor);
+        } else if (shapeToLower === 'triangle') {
+            logoShape = new Triangle(scolor, text, tcolor);
+        } else {
+            console.log("Invalid shape: Please enter either square, circle or triangle")
         }
+
+        console.log(logoShape);
+        const logoCode = '<svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">' + logoShape + '</svg>';
+        console.log(logoCode);
     })
