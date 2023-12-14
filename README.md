@@ -1,4 +1,5 @@
 # SVGLogoMaker
+
 ![License: No License](https://img.shields.io/github/license/CaffeinatedJitterBug/SVGLogoMaker)
 
 ## Description
